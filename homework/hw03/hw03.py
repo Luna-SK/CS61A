@@ -24,7 +24,13 @@ def num_eights(pos):
     ...       ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr', 'For', 'While'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    if pos < 10:
+        if pos == 8:
+            return 1
+        else:
+            return 0
+    else:
+        return num_eights(pos // 10) + num_eights(pos % 10)
 
 
 def pingpong(n):
@@ -60,7 +66,17 @@ def pingpong(n):
     ...       ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    def helper(n):
+        if n == 1:
+            return 1
+        elif n % 8 == 0 or num_eights(n) > 0:
+            return -helper(n - 1)
+        else:
+            return helper(n - 1)
+    if n == 1:
+        return 1
+    else:
+        return pingpong(n - 1) + helper(n - 1)
 
 
 def next_larger_coin(coin):
@@ -116,15 +132,22 @@ def count_coins(change):
     >>> check(HW_SOURCE_FILE, 'count_coins', ['While', 'For'])
     True
     """
-    "*** YOUR CODE HERE ***"
-
+    def helper(n, m=25):
+        if n == 0:
+            return 1
+        elif n < 0:
+            return 0
+        elif m == None:
+            return 0
+        else:
+            return helper(n - m, m) + helper(n, next_smaller_coin(m))
+    return helper(change)
 
 anonymous = False  # Change to True if you would like to remain anonymous on the final leaderboard.
 
 
 def beaver(f):
-    "*** YOUR CODE HERE ***"
-    __________________
+    return (lambda g: g(g(g(g(g(g(g(g(g(g(f)))))))))))(lambda h: lambda: h() or h() or h() or h())()
 
 
 def beaver_syntax_check():

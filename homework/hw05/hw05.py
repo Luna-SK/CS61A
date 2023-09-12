@@ -10,7 +10,17 @@ def merge(a, b):
     >>> [next(result) for _ in range(10)]
     [2, 3, 5, 7, 8, 9, 11, 13, 14, 15]
     """
-    "*** YOUR CODE HERE ***"
+    t1, t2 = next(a), next(b)
+    while True:
+        if t1 < t2:
+            yield t1
+            t1 = next(a)
+        elif t1 > t2:
+            yield t2
+            t2 = next(b)
+        else:
+            yield t1
+            t1, t2 = next(a), next(b)
 
 
 def gen_perms(seq):
@@ -35,7 +45,12 @@ def gen_perms(seq):
     >>> sorted(gen_perms("ab"))
     [['a', 'b'], ['b', 'a']]
     """
-    "*** YOUR CODE HERE ***"
+    if len(seq) == 1:
+        yield list(seq)
+    for i in range(len(seq)):
+        perm = seq[:i] + seq[i + 1:]
+        for p in gen_perms(perm):
+            yield [seq[i]] + p
 
 
 def yield_paths(t, value):
@@ -72,10 +87,11 @@ def yield_paths(t, value):
     >>> sorted(list(path_to_2))
     [[0, 2], [0, 2, 1, 2]]
     """
-    "*** YOUR CODE HERE ***"
-    for _______________ in _________________:
-        for _______________ in _________________:
-            "*** YOUR CODE HERE ***"
+    if label(t) == value:
+        yield [value]
+    for b in branches(t):
+        for path in yield_paths(b, value):
+            yield [label(t)] + path
 
 
 def hailstone(n):
@@ -88,7 +104,14 @@ def hailstone(n):
     >>> next(hail_gen)
     1
     """
-    "*** YOUR CODE HERE ***"
+    yield n
+    if n == 1:
+        pass
+    elif n % 2 == 1:
+        n = n * 3 + 1
+    else:
+        n = n // 2
+    yield from hailstone(n)
 
 
 def remainders_generator(m):
@@ -122,7 +145,13 @@ def remainders_generator(m):
     7
     11
     """
-    "*** YOUR CODE HERE ***"
+    def helper(n):
+        for i in naturals():
+            if i % m == n:
+                yield i
+    for x in range(m):
+        yield helper(x)
+
 
 
 # Tree ADT
